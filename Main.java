@@ -73,6 +73,9 @@ public class Main {
 
             // Render step-by-step solution sequence for the requested heuristic
             SearchResult chosenResult = (heuristicChoice == 1) ? resultH1 : resultH2;
+            System.out.println("Using heuristic: " + ((heuristicChoice == 1)
+                    ? new MisplacedTilesHeuristic().getName()
+                    : new ManhattanDistanceHeuristic().getName()));
             renderSolutionSteps(chosenResult.getPath());
 
             // Output empirical comparative benchmark metrics
@@ -115,10 +118,10 @@ public class Main {
         System.out.println("\n----------------------------------------");
         System.out.println("      PERFORMANCE BENCHMARK REPORT      ");
         System.out.println("----------------------------------------");
-        System.out.println("H1 Search Cost (Nodes Generated): " + r1.getNodesGenerated());
-        System.out.println("H2 Search Cost (Nodes Generated): " + r2.getNodesGenerated());
-        System.out.printf("H1 Execution Time:               %.3f ms%n", r1.getTimeMs());
-        System.out.printf("H2 Execution Time:               %.3f ms%n", r2.getTimeMs());
+        System.out.println("H1 (Misplaced Tiles) Search Cost: " + r1.getNodesGenerated());
+        System.out.println("H2 (Manhattan Distance) Search Cost: " + r2.getNodesGenerated());
+        System.out.printf("H1 (Misplaced Tiles) Execution Time: %.3f ms%n", r1.getTimeMs());
+        System.out.printf("H2 (Manhattan Distance) Execution Time: %.3f ms%n", r2.getTimeMs());
         System.out.println("----------------------------------------");
     }
 }

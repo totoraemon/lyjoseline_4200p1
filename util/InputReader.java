@@ -9,6 +9,8 @@ import java.util.Scanner;
 public final class InputReader {
 
     private static final int GRID_SIZE = 3;
+    private static final int MIN_TILE = 0;
+    private static final int MAX_TILE = 8;
 
     // Suppress default constructor to prevent instantiation
     private InputReader() {
@@ -32,6 +34,20 @@ public final class InputReader {
     }
 
     /**
+     * Reads a single tile value in the 0-8 range and re-prompts until valid.
+     */
+    public static int readTile(Scanner scanner) {
+        int value;
+        while (true) {
+            value = readInt(scanner);
+            if (value >= MIN_TILE && value <= MAX_TILE) {
+                return value;
+            }
+            System.out.print("Value must be between 0 and 8. Please try again: ");
+        }
+    }
+
+    /**
      * Parses a 3x3 matrix from standard input token stream.
      *
      * @param scanner Input source stream
@@ -43,9 +59,18 @@ public final class InputReader {
         int[][] puzzle = new int[GRID_SIZE][GRID_SIZE];
         System.out.println("Enter 9 integers (0-8) representing the 3x3 puzzle:");
 
+        boolean[] seen = new boolean[GRID_SIZE * GRID_SIZE];
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
-                puzzle[row][col] = readInt(scanner);
+                int value;
+                do {
+                    value = readTile(scanner);
+                    if (seen[value]) {
+                        System.out.print("Duplicate tile " + value + ". Please enter each value 0-8 exactly once: ");
+                    }
+                } while (seen[value]);
+                seen[value] = true;
+                puzzle[row][col] = value;
             }
         }
         return puzzle;
